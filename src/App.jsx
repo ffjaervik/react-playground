@@ -1,7 +1,7 @@
 import "./App.css";
 import Nav from "./components/Nav";
 import { useState } from "react";
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
 export const Context = createContext();
 
