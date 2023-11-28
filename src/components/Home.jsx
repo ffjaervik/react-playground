@@ -7,7 +7,6 @@ import GeneratePdfButton from './GeneratePdfButton';
 function Home() {
     const [schedule, setSchedule] = useState(null);
     const [loading, setLoading] = useState(true);
-    console.log(schedule);
 
     useEffect(() => {
         // Fetch schedule data from the Express API
