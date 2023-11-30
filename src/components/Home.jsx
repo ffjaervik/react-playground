@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import Schedule from './Schedule';
+
 import GeneratePdfButton from './GeneratePdfButton';
 
 function Home() {
@@ -12,7 +12,10 @@ function Home() {
         // Fetch schedule data from the Express API
         axios
             .get('http://localhost:3001/schedule')
-            .then((response) => setSchedule(response.data.schedule))
+            .then((response) => {
+                console.log(response.data)
+                setSchedule(response.data);
+            })
             .catch((error) => console.error('Error fetching schedule:', error))
             .finally(() => setLoading(false));
     }, []);
@@ -21,8 +24,7 @@ function Home() {
         <div>
             {!loading && (
                 <>
-                    <Schedule schedule={schedule} />
-                    <GeneratePdfButton />
+                    <GeneratePdfButton data={schedule} />
                 </>
             )}
         </div>
