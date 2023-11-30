@@ -2,16 +2,34 @@
 import { useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 function SignaturePage() {
   const canvasRef = useRef(null);
   const { pdfUrl } = useParams();
   console.log(pdfUrl);
 
+
   const handleSaveSignature = () => {
     const signatureDataUrl = canvasRef.current.toDataURL();
     console.log('Signature Data URL:', signatureDataUrl);
-    // You can now send `signatureDataUrl` to the server or save it as needed.
+
+    axios.post('http://localhost:3001/generate-signed-pdf', { signatureData: signatureDataUrl }, { responseType: 'blob' })
+  .then(response => {
+    console.log(response)
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'schedule.pdf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  })
+  .catch(error => {
+    console.error('Error saving signature:', error);
+    // Handle the error as needed
+  });
   };
 
   const handleClearSignature = () => {
